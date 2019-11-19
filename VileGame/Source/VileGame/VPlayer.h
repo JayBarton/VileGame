@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class UBoxComponent;
 
 UCLASS()
 class VILEGAME_API AVPlayer : public APawn
@@ -24,6 +25,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	UStaticMeshComponent* meshComp;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UBoxComponent* boxComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* cameraComp;

@@ -3,6 +3,7 @@
 
 #include "VPlayer.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h" 
 
@@ -12,8 +13,11 @@ AVPlayer::AVPlayer()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("boxComp"));
+	RootComponent = boxComp;
+
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("meshComp"));
-	RootComponent = meshComp;
+	meshComp->SetupAttachment(RootComponent);
 
 	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArm"));
 	springArm->SetupAttachment(RootComponent);
@@ -43,14 +47,28 @@ void AVPlayer::Tick(float DeltaTime)
 
 	FVector position = GetActorLocation();
 
+
 	movementDirection.Normalize();
 
-	position.X += movementDirection.X * moveSpeed * DeltaTime;
+	FVector p2 = position;
+
+	//TODO come up with a better solution here
+	//using this to move along walls
 	position.Y += movementDirection.Y * moveSpeed * DeltaTime;
+	if (!SetActorLocation(position, true))
+	{
+		position.Y = p2.Y;
 
-	UE_LOG(LogTemp, Warning, TEXT("%f, %f"), movementDirection.X, movementDirection.Y);
+	}
+	position.X += movementDirection.X * moveSpeed * DeltaTime;
+	if (!SetActorLocation(position, true))
+	{
+		position.X = p2.X;
 
-	SetActorLocation(position);
+	}
+
+
+
 
 	movementDirection.Set(0.0f, 0.0f);
 
