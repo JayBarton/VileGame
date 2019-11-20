@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h" 
+#include "VPickup.h"
 
 // Sets default values
 AVPlayer::AVPlayer()
@@ -37,7 +38,8 @@ AVPlayer::AVPlayer()
 void AVPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AVPlayer::OnOverlapBegin);
+
 }
 
 // Called every frame
@@ -67,11 +69,7 @@ void AVPlayer::Tick(float DeltaTime)
 
 	}
 
-
-
-
 	movementDirection.Set(0.0f, 0.0f);
-
 
 }
 
@@ -83,6 +81,16 @@ void AVPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	InputComponent->BindAxis("MoveX", this, &AVPlayer::MoveX);
 	InputComponent->BindAxis("MoveY", this, &AVPlayer::MoveY);
 
+}
+
+void AVPlayer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (Cast<AVPickup>(OtherActor))
+	{
+		//TODO apply score
+
+		OtherActor->Destroy();
+	}
 }
 
 void AVPlayer::MoveX(float value)
