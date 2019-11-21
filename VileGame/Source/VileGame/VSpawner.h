@@ -23,6 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(VisibleAnywhere, Category = "test")
 	bool bIsFree;
 	bool isFreeing;
 
@@ -30,7 +31,7 @@ public:
 
 	FTimerHandle TimerHandle_FreeTimer;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Spawn")
 	void SetUp();
 
 	void SetFree();

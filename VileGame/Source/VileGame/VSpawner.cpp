@@ -2,8 +2,6 @@
 
 
 #include "VSpawner.h"
-
-
 #include "TimerManager.h" 
 // Sets default values
 AVSpawner::AVSpawner()
