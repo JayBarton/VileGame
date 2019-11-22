@@ -101,4 +101,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	float levelTime = 20.0f;
 
+//	UPROPERTY(VisibleAnywhere)
+	int currentType = 0;
+
 };

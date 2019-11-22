@@ -3,7 +3,8 @@
 
 #include "VPickup.h"
 #include "Components/SphereComponent.h" 
-
+#include "VSpawnManager.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 AVPickup::AVPickup()
 {
@@ -15,6 +16,10 @@ AVPickup::AVPickup()
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("meshComp"));
 	meshComp->SetupAttachment(RootComponent);
+	meshComp->CastShadow = 0;
+
+	materials.SetNum(2);
+
 }
 
 // Called when the game starts or when spawned
@@ -22,13 +27,17 @@ void AVPickup::BeginPlay()
 {
 	Super::BeginPlay();
 	SetLifeSpan(lifeTime);
+
+	type = FMath::RandRange(0, 1);
+	meshComp->SetMaterial(0, materials[type]);
+
+
 }
 
 // Called every frame
 void AVPickup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 
@@ -39,7 +48,13 @@ void AVPickup::Kill()
 
 int AVPickup::GetPoints()
 {
-	return 0;
+	//EWWW!
+	int activeType = Cast<AVSpawnManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AVSpawnManager::StaticClass()))->currentType;
+	if (type == activeType)
+	{
+		return 5;
+	}
+	return -5;
 }
 
 int AVPickup::GetType()

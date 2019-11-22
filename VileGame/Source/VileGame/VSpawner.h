@@ -23,12 +23,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere, Category = "test")
-	bool bIsFree;
-	bool isFreeing;
-
-	float freeTime;
-
 	FTimerHandle TimerHandle_FreeTimer;
 
 	UFUNCTION(BlueprintCallable, Category = "Spawn")
@@ -38,4 +32,11 @@ public:
 
 	//TODO maybe include some sort of function to stop the timer if the game has ended, we'll see what that looks like
 
+
+	UPROPERTY(VisibleAnywhere, Category = "test")
+	bool bIsFree;
+
+	bool isFreeing;
+
+	float freeTime;
 };

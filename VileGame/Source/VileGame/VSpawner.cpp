@@ -17,7 +17,7 @@ AVSpawner::AVSpawner()
 void AVSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Start!"));
+	//UE_LOG(LogTemp, Warning, TEXT("Start!"));
 
 	SetUp();
 
@@ -39,6 +39,6 @@ void AVSpawner::SetUp()
 void AVSpawner::SetFree()
 {
 	bIsFree = true;
-	UE_LOG(LogTemp, Warning, TEXT("Free!"));
+	//UE_LOG(LogTemp, Warning, TEXT("Free!"));
 }
 

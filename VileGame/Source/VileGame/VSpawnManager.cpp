@@ -25,8 +25,6 @@ void AVSpawnManager::BeginPlay()
 
 	GetSpawners();
 
-	
-	//
 	GetWorldTimerManager().SetTimer(TimerHandle_SpawnTimer, this, &AVSpawnManager::CheckSpawn, spawnTime, true, 0.0f);
 	GetWorldTimerManager().SetTimer(TimerHandle_TypeTimer, this, &AVSpawnManager::CheckActiveType, typeTime, true, 0.0f);
 	GetWorldTimerManager().SetTimer(TimerHandle_LevelTimer, this, &AVSpawnManager::CheckLevelTime, levelTime, false);
@@ -78,12 +76,15 @@ void AVSpawnManager::CheckSpawn()
 		FVector location = freeSpawners[randomSpawner]->GetActorLocation();
 		location.Z += 60.0f;
 
-
 		AVPickup* newPickup = GetWorld()->SpawnActor<AVPickup>(pickup, location, FRotator::ZeroRotator, SpawnParams);
 
-		newPickup->AttachToActor(freeSpawners[randomSpawner], FAttachmentTransformRules::KeepWorldTransform);
+		//If pickup fails to spawn or is immediately destroyed(if the player is standing on it when it spawns), stop here
+		if (newPickup)
+		{
+			freeSpawners[randomSpawner]->bIsFree = false;
+			newPickup->AttachToActor(freeSpawners[randomSpawner], FAttachmentTransformRules::KeepWorldTransform);
+		}
 
-		freeSpawners[randomSpawner]->bIsFree = false;
 	}
 
 
@@ -92,6 +93,15 @@ void AVSpawnManager::CheckSpawn()
 void AVSpawnManager::CheckActiveType()
 {
 	UE_LOG(LogTemp, Warning, TEXT("CHANGE PLACES!!!!"));
+
+	if (currentType == 0)
+	{
+		currentType = 1;
+	}
+	else
+	{
+		currentType = 0;
+	}
 
 }
 

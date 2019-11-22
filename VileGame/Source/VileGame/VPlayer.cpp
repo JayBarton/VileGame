@@ -85,9 +85,15 @@ void AVPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AVPlayer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (Cast<AVPickup>(OtherActor))
+	if (AVPickup* pickup = Cast<AVPickup>(OtherActor))
 	{
-		//TODO apply score
+		score += pickup->GetPoints();
+		if (score < 0)
+		{
+			score = 0;
+		}
+
+		UE_LOG(LogTemp, Warning, TEXT("SCORE: %i"), score);
 
 		OtherActor->Destroy();
 	}

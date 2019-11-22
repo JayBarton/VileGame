@@ -7,6 +7,7 @@
 #include "VPickup.generated.h"
 
 class USphereComponent;
+class UMaterial;
 
 UCLASS()
 class VILEGAME_API AVPickup : public AActor
@@ -21,14 +22,18 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-    UPROPERTY(EditAnywhere, Category = "Time")
-	float lifeTime = 5.0f;
-
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	UStaticMeshComponent* meshComp;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	USphereComponent* sphereComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Material")
+	TArray<UMaterial*> materials;
+
+
+	UPROPERTY(EditAnywhere, Category = "Time")
+	float lifeTime = 5.0f;
 
 public:	
 	// Called every frame
