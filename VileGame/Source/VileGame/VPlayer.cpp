@@ -2,23 +2,14 @@
 
 
 #include "VPlayer.h"
-#include "Components/StaticMeshComponent.h"
-#include "Components/BoxComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h" 
-#include "VPickup.h"
 
 // Sets default values
 AVPlayer::AVPlayer()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("boxComp"));
-	RootComponent = boxComp;
-
-	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("meshComp"));
-	meshComp->SetupAttachment(RootComponent);
 
 	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArm"));
 	springArm->SetupAttachment(RootComponent);
@@ -34,21 +25,18 @@ AVPlayer::AVPlayer()
 
 }
 
-// Called when the game starts or when spawned
-void AVPlayer::BeginPlay()
-{
-	Super::BeginPlay();
-	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AVPlayer::OnOverlapBegin);
-
-}
-
 // Called every frame
 void AVPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector position = GetActorLocation();
+	MovePlayer(DeltaTime);
 
+}
+
+void AVPlayer::MovePlayer(float DeltaTime)
+{
+	FVector position = GetActorLocation();
 
 	movementDirection.Normalize();
 
@@ -70,7 +58,6 @@ void AVPlayer::Tick(float DeltaTime)
 	}
 
 	movementDirection.Set(0.0f, 0.0f);
-
 }
 
 // Called to bind functionality to input
@@ -83,21 +70,6 @@ void AVPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void AVPlayer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (AVPickup* pickup = Cast<AVPickup>(OtherActor))
-	{
-		score += pickup->GetPoints();
-		if (score < 0)
-		{
-			score = 0;
-		}
-
-		UE_LOG(LogTemp, Warning, TEXT("SCORE: %i"), score);
-
-		OtherActor->Destroy();
-	}
-}
 
 void AVPlayer::MoveX(float value)
 {

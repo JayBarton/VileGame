@@ -2,16 +2,14 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "VPawn.h"
 #include "VPlayer.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
-class UBoxComponent;
 
 UCLASS()
-class VILEGAME_API AVPlayer : public APawn
+class VILEGAME_API AVPlayer : public AVPawn
 {
 	GENERATED_BODY()
 
@@ -20,14 +18,6 @@ public:
 	AVPlayer();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
-	UStaticMeshComponent* meshComp;
-
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
-	UBoxComponent* boxComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* cameraComp;
@@ -42,14 +32,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void MovePlayer(float DeltaTime);
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	//For collecting pickups
-	UFUNCTION()
-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	int score = 0;
 
 private:
 

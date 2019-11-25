@@ -92,7 +92,7 @@ void AVSpawnManager::CheckSpawn()
 
 void AVSpawnManager::CheckActiveType()
 {
-	UE_LOG(LogTemp, Warning, TEXT("CHANGE PLACES!!!!"));
+//	UE_LOG(LogTemp, Warning, TEXT("CHANGE PLACES!!!!"));
 
 	if (currentType == 0)
 	{

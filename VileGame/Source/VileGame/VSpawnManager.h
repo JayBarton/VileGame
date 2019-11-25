@@ -7,45 +7,6 @@
 #include "VSpawnManager.generated.h"
 
 
-
-/*
-	public GameObject[] spawners;
-	public GameObject pickup;
-
-	public GameObject displayObject;
-
-	public GameObject pauseMenu;
-
-	public PlayerController pc;
-	public EnemyController ec;
-
-	public Material [] materials;
-
-	public Text timeText;
-	public Text promptText;
-	public Text startText;
-
-	float spawnTime = 0.75f; //make random
-	float spawnTimer = 0.0f;
-	float typeTime = 5.0f; //should also be random
-	float typetimer = 0.0f;
-
-	float levelTime = 20.0f;
-	float startTime = 5.0f;
-
-	public int currentType;
-
-	enum State {START_GAME, PLAYING, END_GAME, PAUSE};
-	State state = State.START_GAME;
-
-	//pause options
-	const int CONTINUE = 0;
-	const int QUIT = 1;
-
-	const int NUMBER_OF_LEVELS = 3;
-	public static int currentLevel = 1;
-*/
-
 class AVSpawner;
 class AVPickup;
 

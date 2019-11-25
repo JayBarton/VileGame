@@ -43,12 +43,13 @@ void AVPickup::Tick(float DeltaTime)
 
 void AVPickup::Kill()
 {
-	UE_LOG(LogTemp, Warning, TEXT("GONE!"));
+	//UE_LOG(LogTemp, Warning, TEXT("GONE!"));
 }
 
 int AVPickup::GetPoints()
 {
 	//EWWW!
+	//Should probably error check this...
 	int activeType = Cast<AVSpawnManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AVSpawnManager::StaticClass()))->currentType;
 	if (type == activeType)
 	{
