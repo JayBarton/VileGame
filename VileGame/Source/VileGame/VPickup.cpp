@@ -60,6 +60,6 @@ int AVPickup::GetPoints()
 
 int AVPickup::GetType()
 {
-	return 0;
+	return type;
 }
 
