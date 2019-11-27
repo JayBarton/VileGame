@@ -29,7 +29,7 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	EEnemyState state = EEnemyState::Seek;
+	EEnemyState state = EEnemyState::Wander;
 
 	AVSpawnManager* spawnManager = nullptr;
 
@@ -45,6 +45,8 @@ private:
 	FVector2D Seek(FVector2D toFollow);
 
 	FVector2D Limit(FVector2D vec, float max);
+
+	FVector2D Wander();
 
 	FVector2D Avoid();
 

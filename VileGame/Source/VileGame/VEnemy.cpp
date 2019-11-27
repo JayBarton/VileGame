@@ -1,5 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+/*
+Much of the enemy's behavior is based off of the steering behaviors of Craig W. Reynolds. http://www.red3d.com/cwr/steer/
+*/
 
 #include "VEnemy.h"
 #include "Kismet/GameplayStatics.h"
@@ -54,40 +57,67 @@ void AVEnemy::Tick(float DeltaTime)
 	switch (state)
 	{
 	case EEnemyState::Wander:
-		break;
-	case EEnemyState::Seek:
+	{
+		FVector2D avoidance(0.0f, 0.0f);
+		
+		FVector2D steer = Wander();
 
-	/*	if (occupiedSpawners.Num() == 0)
+		if (FindClosestPickup(occupiedSpawners, steer))
 		{
-			wanderAngle = 0.0f;
-			state = EEnemyState::Wander;
-		}*/
+			avoidance = Avoid();
 
-		FVector2D toFollow;
-
-		if (FindClosestPickup(occupiedSpawners, toFollow))
-		{
-			FVector2D position2D(toFollow.X, toFollow.Y);
-
-			FVector2D steer = Seek(position2D);
-
-			steer += Avoid() * 1.5f;
-
-			velocity = Limit(velocity + steer, maxVelocity);
-
-			FVector position = GetActorLocation();
-
-			position.X += velocity.X * DeltaTime;
-			position.Y += velocity.Y * DeltaTime;
-			SetActorLocation(position, true);
+			state = EEnemyState::Seek;
 		}
-	/*	else
+
+		steer += avoidance * 1.5f;
+		velocity = Limit(velocity + steer, maxVelocity);
+
+		FVector position = GetActorLocation();
+		position.X += velocity.X * DeltaTime;
+		position.Y += velocity.Y * DeltaTime;
+		//Used to prevent the enemy from getting stuck on walls. If the enemy can't move forward, it reverses direction
+		//May need to have some different reaction if the enemy bumps into the player, too easy for the player to "bully" the enemy as is.
+		if (!SetActorLocation(position, true))
+		{
+			velocity *= -1;
+			wanderAngle = 0.0f;
+		}
+		break;
+	}
+	case EEnemyState::Seek:
+	{
+		if (occupiedSpawners.Num() == 0)
 		{
 			wanderAngle = 0.0f;
 			state = EEnemyState::Wander;
-		}*/
+		}
+		else
+		{
+			FVector2D toFollow;
 
+			if (FindClosestPickup(occupiedSpawners, toFollow))
+			{
+				FVector2D position2D(toFollow.X, toFollow.Y);
+
+				FVector2D steer2 = Seek(position2D);
+
+				steer2 += Avoid() * 1.5f;
+
+				velocity = Limit(velocity + steer2, maxVelocity);
+
+				FVector position2 = GetActorLocation();
+				position2.X += velocity.X * DeltaTime;
+				position2.Y += velocity.Y * DeltaTime;
+				SetActorLocation(position2, true);
+			}
+			else
+			{
+				wanderAngle = 0.0f;
+				state = EEnemyState::Wander;
+			}
+		}
 		break;
+	}
 	}
 }
 
@@ -117,6 +147,26 @@ FVector2D AVEnemy::Limit(FVector2D vec, float max)
 	return vec;
 }
 
+FVector2D AVEnemy::Wander()
+{
+	FVector2D circleCenter = velocity.GetSafeNormal() * 200;
+
+	FVector2D displacement(0.0f, 1.0f);
+
+	displacement *= 200;
+
+	displacement = displacement.GetRotated(wanderAngle);
+
+	wanderAngle += FMath::RandRange(0, 120) - 60;
+
+
+	FVector2D wanderForce = circleCenter + displacement;
+
+	FVector2D steer = Limit(wanderForce, maxForce);
+
+	return steer;
+}
+
 FVector2D AVEnemy::Avoid()
 {
 
@@ -126,8 +176,8 @@ FVector2D AVEnemy::Avoid()
 
 	FVector2D normalizedVelocity = velocity.GetSafeNormal();
 
-	FVector2D ahead1 = position + normalizedVelocity * 4;
-	FVector2D ahead2 = position + normalizedVelocity * 2;
+	FVector2D ahead1 = position + normalizedVelocity * 400;
+	FVector2D ahead2 = position + normalizedVelocity * 200;
 
 	AActor* closest = nullptr;
 
@@ -154,6 +204,9 @@ FVector2D AVEnemy::Avoid()
 		
 		avoidance = (ahead1 - closestPosition).GetSafeNormal() * 0.25f;
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Avoid: %s"), *avoidance.ToString());
+
 	return avoidance;
 }
 
