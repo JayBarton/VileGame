@@ -23,6 +23,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void StartGame();
+
 	void GetSpawners();
 
 public:	
@@ -42,7 +44,12 @@ public:
 
 	FTimerHandle TimerHandle_TypeTimer;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Time")
 	FTimerHandle TimerHandle_LevelTimer;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Time")
+	FTimerHandle TimerHandle_StartTimer;
+
 
 	TArray<AVSpawner*> spawners;
 
@@ -61,8 +68,11 @@ public:
 	//Length of the level
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	float levelTime = 20.0f;
+	//Delay before level start
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	float levelStartTime = 3.0f;
 
-//	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Type")
 	int currentType = 0;
 
 };

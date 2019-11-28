@@ -25,10 +25,14 @@ void AVSpawnManager::BeginPlay()
 
 	GetSpawners();
 
+	GetWorldTimerManager().SetTimer(TimerHandle_StartTimer, this, &AVSpawnManager::StartGame, levelStartTime, false);
+}
+
+void AVSpawnManager::StartGame()
+{
 	GetWorldTimerManager().SetTimer(TimerHandle_SpawnTimer, this, &AVSpawnManager::CheckSpawn, spawnTime, true, 0.0f);
 	GetWorldTimerManager().SetTimer(TimerHandle_TypeTimer, this, &AVSpawnManager::CheckActiveType, typeTime, true, 0.0f);
 	GetWorldTimerManager().SetTimer(TimerHandle_LevelTimer, this, &AVSpawnManager::CheckLevelTime, levelTime, false);
-
 }
 
 void AVSpawnManager::GetSpawners()

@@ -176,8 +176,8 @@ FVector2D AVEnemy::Avoid()
 
 	FVector2D normalizedVelocity = velocity.GetSafeNormal();
 
-	FVector2D ahead1 = position + normalizedVelocity * 400;
-	FVector2D ahead2 = position + normalizedVelocity * 200;
+	FVector2D ahead1 = position + normalizedVelocity * 40;
+	FVector2D ahead2 = position + normalizedVelocity * 20;
 
 	AActor* closest = nullptr;
 
@@ -187,14 +187,17 @@ FVector2D AVEnemy::Avoid()
 		//Not ideal...
 		AVSpawner* current = spawnManager->spawners[i];
 		current->GetAttachedActors(child);
+
 		if (child.Num() > 0 && Cast<AVPickup>(child[0])->GetType() != spawnManager->currentType)
 		{
 			FVector2D currentPosition(current->GetActorLocation().X, current->GetActorLocation().Y);
-			if (Intersect(ahead1, ahead2, currentPosition, 2) && 
+			if (Intersect(ahead1, ahead2, currentPosition, 20) && 
 				(!closest || (position - currentPosition).Size() < 
 				(GetActorLocation() - closest->GetActorLocation()).Size()))
 			{
 				closest = current;
+				UE_LOG(LogTemp, Warning, TEXT("3"));
+
 			}
 		}
 	}
@@ -202,10 +205,12 @@ FVector2D AVEnemy::Avoid()
 	{
 		FVector2D closestPosition(closest->GetActorLocation().X, closest->GetActorLocation().Y);
 		
-		avoidance = (ahead1 - closestPosition).GetSafeNormal() * 0.25f;
+		avoidance = (ahead1 - closestPosition).GetSafeNormal() * 250.0f;
+
+		UE_LOG(LogTemp, Warning, TEXT("Avoid: %s"), *avoidance.ToString());
+
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Avoid: %s"), *avoidance.ToString());
 
 	return avoidance;
 }
