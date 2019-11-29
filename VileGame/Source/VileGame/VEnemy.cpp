@@ -176,8 +176,8 @@ FVector2D AVEnemy::Avoid()
 
 	FVector2D normalizedVelocity = velocity.GetSafeNormal();
 
-	FVector2D ahead1 = position + normalizedVelocity * 40;
-	FVector2D ahead2 = position + normalizedVelocity * 20;
+	FVector2D ahead1 = position + normalizedVelocity * 64;
+	FVector2D ahead2 = position + normalizedVelocity * 32;
 
 	AActor* closest = nullptr;
 
@@ -191,7 +191,7 @@ FVector2D AVEnemy::Avoid()
 		if (child.Num() > 0 && Cast<AVPickup>(child[0])->GetType() != spawnManager->currentType)
 		{
 			FVector2D currentPosition(current->GetActorLocation().X, current->GetActorLocation().Y);
-			if (Intersect(ahead1, ahead2, currentPosition, 20) && 
+			if (Intersect(ahead1, ahead2, currentPosition, 64) && 
 				(!closest || (position - currentPosition).Size() < 
 				(GetActorLocation() - closest->GetActorLocation()).Size()))
 			{
@@ -205,7 +205,7 @@ FVector2D AVEnemy::Avoid()
 	{
 		FVector2D closestPosition(closest->GetActorLocation().X, closest->GetActorLocation().Y);
 		
-		avoidance = (ahead1 - closestPosition).GetSafeNormal() * 250.0f;
+		avoidance = (ahead1 - closestPosition).GetSafeNormal() * 300.0f;
 
 		UE_LOG(LogTemp, Warning, TEXT("Avoid: %s"), *avoidance.ToString());
 
