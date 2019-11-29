@@ -13,5 +13,15 @@ UCLASS()
 class VILEGAME_API AVileGameGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	virtual void BeginPlay() override;
+
+
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<AActor> displayObject;
 	
 };

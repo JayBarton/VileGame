@@ -6,9 +6,11 @@
 #include "VSpawner.h"
 #include "VPickup.h"
 #include "Kismet/GameplayStatics.h"
-
-
 #include "Engine/World.h" 
+
+
+
+#include "Components/StaticMeshComponent.h" 
 
 // Sets default values
 AVSpawnManager::AVSpawnManager()
@@ -33,6 +35,19 @@ void AVSpawnManager::StartGame()
 	GetWorldTimerManager().SetTimer(TimerHandle_SpawnTimer, this, &AVSpawnManager::CheckSpawn, spawnTime, true, 0.0f);
 	GetWorldTimerManager().SetTimer(TimerHandle_TypeTimer, this, &AVSpawnManager::CheckActiveType, typeTime, true, 0.0f);
 	GetWorldTimerManager().SetTimer(TimerHandle_LevelTimer, this, &AVSpawnManager::CheckLevelTime, levelTime, false);
+
+
+	//EW!
+	displayMesh = Cast<UStaticMeshComponent>((UGameplayStatics::GetActorOfClass(GetWorld(), displayObject))->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+	if (!displayMesh)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No DisplayObject found"));
+	}
+	else
+	{
+		displayMesh->SetVisibility(true);
+	}
+
 }
 
 void AVSpawnManager::GetSpawners()
@@ -96,20 +111,18 @@ void AVSpawnManager::CheckSpawn()
 
 void AVSpawnManager::CheckActiveType()
 {
-
 	if (currentType == 0)
 	{
 		currentType = 1;
 		UE_LOG(LogTemp, Warning, TEXT("Green!!!"));
-
 	}
 	else
 	{
 		currentType = 0;
 		UE_LOG(LogTemp, Warning, TEXT("Red!!!"));
-
 	}
 
+	displayMesh->SetMaterial(0, materials[currentType]);
 }
 
 void AVSpawnManager::CheckLevelTime()

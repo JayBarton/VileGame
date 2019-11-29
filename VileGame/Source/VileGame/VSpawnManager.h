@@ -10,6 +10,9 @@
 class AVSpawner;
 class AVPickup;
 
+class UMaterial;
+
+
 UCLASS()
 class VILEGAME_API AVSpawnManager : public AActor
 {
@@ -50,11 +53,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Time")
 	FTimerHandle TimerHandle_StartTimer;
 
-
 	TArray<AVSpawner*> spawners;
-
-	//UPROPERTY(EditDefaultsOnly, Category = "Spawning")
-	//TSubclassOf<AVSpawner> spawnerType;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	TSubclassOf<AVPickup> pickup;
@@ -74,5 +73,15 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Type")
 	int currentType = 0;
+
+
+	//Find a better way of handling this, it's duplicated from VPickup
+	UPROPERTY(EditDefaultsOnly, Category = "Material")
+	TArray<UMaterial*> materials;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<AActor> displayObject;
+
+	UStaticMeshComponent* displayMesh = nullptr;
 
 };
