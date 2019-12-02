@@ -44,6 +44,9 @@ private:
 
 	void MoveY(float value);
 
+	//Will hopefully have 2 functions for the enter button...
+	void EnterPressed();
+
 	FVector2D movementDirection;
 
 };

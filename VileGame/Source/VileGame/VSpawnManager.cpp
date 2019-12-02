@@ -9,7 +9,7 @@
 #include "Engine/World.h" 
 
 
-
+#include "VileGameGameModeBase.h"
 #include "Components/StaticMeshComponent.h" 
 
 // Sets default values
@@ -105,8 +105,6 @@ void AVSpawnManager::CheckSpawn()
 		}
 
 	}
-
-
 }
 
 void AVSpawnManager::CheckActiveType()
@@ -129,6 +127,9 @@ void AVSpawnManager::CheckLevelTime()
 {
 	GetWorldTimerManager().ClearTimer(TimerHandle_SpawnTimer);
 	GetWorldTimerManager().ClearTimer(TimerHandle_TypeTimer);
-	UE_LOG(LogTemp, Warning, TEXT("LEVEL DONE"));
+
+	//Clear all spawners
+
+	Cast<AVileGameGameModeBase> (UGameplayStatics::GetGameMode(GetWorld()))->CompleteLevel();
 }
 

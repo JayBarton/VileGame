@@ -17,11 +17,14 @@ class VILEGAME_API AVileGameGameModeBase : public AGameModeBase
 public:
 	virtual void BeginPlay() override;
 
-
+	void CompleteLevel();
 
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<AActor> displayObject;
 	
+
+private:
+	void EnterPressed();
 };

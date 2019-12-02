@@ -68,6 +68,8 @@ void AVPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	InputComponent->BindAxis("MoveX", this, &AVPlayer::MoveX);
 	InputComponent->BindAxis("MoveY", this, &AVPlayer::MoveY);
 
+
+	InputComponent->BindAction("Enter", IE_Pressed, this, &AVPlayer::EnterPressed);
 }
 
 
@@ -79,5 +81,10 @@ void AVPlayer::MoveX(float value)
 void AVPlayer::MoveY(float value)
 {
 	movementDirection.Y = value;
+}
+
+void AVPlayer::EnterPressed()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ENTER"));
 }
 
