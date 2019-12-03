@@ -16,6 +16,6 @@ class VILEGAME_API UVileGameInstance : public UGameInstance
 
 public:
 
-	int currentLevel = 0;
+	int currentLevel = 1;
 	
 };

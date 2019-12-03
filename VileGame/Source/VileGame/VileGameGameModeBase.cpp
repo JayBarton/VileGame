@@ -5,6 +5,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "VileGameInstance.h"
 
+#include "VPlayer.h"
+#include "VEnemy.h"
+
 void AVileGameGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -17,10 +20,16 @@ void AVileGameGameModeBase::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("No Display Object"));
 	}
 
+	//Just testing for now...
 	UVileGameInstance* GI = Cast<UVileGameInstance>(GetGameInstance());
 	if (GI)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Current Level : %i"), GI->currentLevel);
+		FString levelName = "Map" + FString::FromInt(GI->currentLevel);
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *levelName);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NO game instance found"));
 	}
 
 }
@@ -28,14 +37,35 @@ void AVileGameGameModeBase::BeginPlay()
 void AVileGameGameModeBase::CompleteLevel()
 {
 	//determine winner
-
-	UE_LOG(LogTemp, Warning, TEXT("LEVEL DONE"));
+	int playerScore = Cast<AVPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AVPlayer::StaticClass()))->score;
+	int enemyScore = Cast<AVEnemy>(UGameplayStatics::GetActorOfClass(GetWorld(), AVEnemy::StaticClass()))->score;
 
 
 	UVileGameInstance* GI = Cast<UVileGameInstance>(GetGameInstance());
 	if (GI)
 	{
-		GI->currentLevel++;
+		if (playerScore > enemyScore)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("PLAYER WINS"));
+
+			GI->currentLevel++;
+
+			if (GI->currentLevel > lastLevel)
+			{
+				//return to title
+				UE_LOG(LogTemp, Warning, TEXT("GAME OVER"));
+				GI->currentLevel = 1;
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("PLAYER LOSES"));
+		}
+		currentLevel = GI->currentLevel;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NO game instance found"));
 	}
 
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->InputComponent->BindAction("Enter", IE_Pressed, this, &AVileGameGameModeBase::EnterPressed);
@@ -44,5 +74,8 @@ void AVileGameGameModeBase::CompleteLevel()
 
 void AVileGameGameModeBase::EnterPressed()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Map2"));
+	//will need some check to return to the title.
+	FString levelName = "Map" + FString::FromInt(currentLevel);
+
+	UGameplayStatics::OpenLevel(GetWorld(), *levelName);
 }

@@ -27,4 +27,8 @@ protected:
 
 private:
 	void EnterPressed();
+
+	int32 currentLevel;
+
+	int32 lastLevel = 2;
 };

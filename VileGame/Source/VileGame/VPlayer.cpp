@@ -5,6 +5,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h" 
 
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 AVPlayer::AVPlayer()
 {
@@ -69,7 +71,7 @@ void AVPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	InputComponent->BindAxis("MoveY", this, &AVPlayer::MoveY);
 
 
-	InputComponent->BindAction("Enter", IE_Pressed, this, &AVPlayer::EnterPressed);
+	InputComponent->BindAction("Enter", IE_Pressed, this, &AVPlayer::EnterPressed).bExecuteWhenPaused = true;
 }
 
 
@@ -85,6 +87,17 @@ void AVPlayer::MoveY(float value)
 
 void AVPlayer::EnterPressed()
 {
-	UE_LOG(LogTemp, Warning, TEXT("ENTER"));
+	if (bIsPaused)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Game unpaused"));
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+		bIsPaused = false;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Game paused"));
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+		bIsPaused = true;
+	}
 }
 
