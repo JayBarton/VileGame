@@ -31,4 +31,6 @@ private:
 	int32 currentLevel;
 
 	int32 lastLevel = 2;
+
+	bool bIsGameOver = false;
 };

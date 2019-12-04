@@ -55,6 +55,7 @@ void AVileGameGameModeBase::CompleteLevel()
 				//return to title
 				UE_LOG(LogTemp, Warning, TEXT("GAME OVER"));
 				GI->currentLevel = 1;
+				bIsGameOver = true;
 			}
 		}
 		else
@@ -74,8 +75,14 @@ void AVileGameGameModeBase::CompleteLevel()
 
 void AVileGameGameModeBase::EnterPressed()
 {
-	//will need some check to return to the title.
-	FString levelName = "Map" + FString::FromInt(currentLevel);
-
+	FString levelName;
+	if (bIsGameOver)
+	{
+		levelName = "TitleScreen";
+	}
+	else
+	{
+		levelName = "Map" + FString::FromInt(currentLevel);
+	}
 	UGameplayStatics::OpenLevel(GetWorld(), *levelName);
 }

@@ -101,9 +101,24 @@ void AVEnemy::Tick(float DeltaTime)
 
 				FVector2D steer2 = Seek(position2D);
 
-				steer2 += Avoid() * 1.5f;
+				UE_LOG(LogTemp, Warning, TEXT("Seek: %s"), *steer2.ToString());
+
+				FVector2D avoidance = Avoid();
+
+				if (avoidance.Size() > 0)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("avoid: %s"), *avoidance.ToString());
+					steer2 += avoidance * 1.5f;
+					UE_LOG(LogTemp, Warning, TEXT("Seek + Avoid: %s"), *steer2.ToString());
+
+				}
+
+
 
 				velocity = Limit(velocity + steer2, maxVelocity);
+
+				UE_LOG(LogTemp, Warning, TEXT("velocity: %s"), *velocity.ToString());
+
 
 				FVector position2 = GetActorLocation();
 				position2.X += velocity.X * DeltaTime;
@@ -176,8 +191,8 @@ FVector2D AVEnemy::Avoid()
 
 	FVector2D normalizedVelocity = velocity.GetSafeNormal();
 
-	FVector2D ahead1 = position + normalizedVelocity * 64;
-	FVector2D ahead2 = position + normalizedVelocity * 32;
+	FVector2D ahead1 = position + normalizedVelocity * 128;
+	FVector2D ahead2 = position + normalizedVelocity * 64;
 
 	AActor* closest = nullptr;
 
@@ -196,8 +211,6 @@ FVector2D AVEnemy::Avoid()
 				(GetActorLocation() - closest->GetActorLocation()).Size()))
 			{
 				closest = current;
-				UE_LOG(LogTemp, Warning, TEXT("3"));
-
 			}
 		}
 	}
@@ -205,9 +218,9 @@ FVector2D AVEnemy::Avoid()
 	{
 		FVector2D closestPosition(closest->GetActorLocation().X, closest->GetActorLocation().Y);
 		
-		avoidance = (ahead1 - closestPosition).GetSafeNormal() * 300.0f;
-
-		UE_LOG(LogTemp, Warning, TEXT("Avoid: %s"), *avoidance.ToString());
+		//avoidance = (ahead1 - closestPosition).GetSafeNormal() * 25.0f;
+		avoidance.Normalize();
+		avoidance *= 25.0f;
 
 	}
 
