@@ -9,6 +9,8 @@
 /**
  * 
  */
+
+class UVResultsWidget;
 UCLASS()
 class VILEGAME_API AVileGameGameModeBase : public AGameModeBase
 {
@@ -23,6 +25,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<AActor> displayObject;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UVResultsWidget> resultsScreen;
+
 	
 
 private:

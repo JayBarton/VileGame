@@ -8,6 +8,9 @@
 #include "VPlayer.h"
 #include "VEnemy.h"
 
+#include "VResultsWidget.h" 
+#include "Components/TextBlock.h" 
+
 void AVileGameGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -40,6 +43,8 @@ void AVileGameGameModeBase::CompleteLevel()
 	int playerScore = Cast<AVPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AVPlayer::StaticClass()))->score;
 	int enemyScore = Cast<AVEnemy>(UGameplayStatics::GetActorOfClass(GetWorld(), AVEnemy::StaticClass()))->score;
 
+	UVResultsWidget* resultsWidget = CreateWidget<UVResultsWidget>(GetWorld(), resultsScreen);
+	resultsWidget->AddToViewport();
 
 	UVileGameInstance* GI = Cast<UVileGameInstance>(GetGameInstance());
 	if (GI)
@@ -54,13 +59,22 @@ void AVileGameGameModeBase::CompleteLevel()
 			{
 				//return to title
 				UE_LOG(LogTemp, Warning, TEXT("GAME OVER"));
+				resultsWidget->results->SetText(FText::FromString("GAME OVER"));
+
 				GI->currentLevel = 1;
 				bIsGameOver = true;
+			}
+			else
+			{
+				resultsWidget->results->SetText(FText::FromString("PLAYER WINS"));
+
 			}
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("PLAYER LOSES"));
+			resultsWidget->results->SetText(FText::FromString("PLAYER LOSES"));
+
 		}
 		currentLevel = GI->currentLevel;
 	}
