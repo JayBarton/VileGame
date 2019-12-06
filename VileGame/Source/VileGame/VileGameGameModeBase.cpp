@@ -11,6 +11,10 @@
 #include "VResultsWidget.h" 
 #include "Components/TextBlock.h" 
 
+
+
+#include "GameFramework/InputSettings.h" 
+
 void AVileGameGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -34,6 +38,11 @@ void AVileGameGameModeBase::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NO game instance found"));
 	}
+
+	inputComponent = UGameplayStatics::GetPlayerController(GetWorld(), 0)->InputComponent;
+	inputComponent->BindAction("Enter", IE_Pressed, this, &AVileGameGameModeBase::PauseGame).bExecuteWhenPaused = true;
+	//Only easy way I can figure out how to unbind the pause
+	pauseKey = inputComponent->GetNumActionBindings() - 1;
 
 }
 
@@ -83,8 +92,30 @@ void AVileGameGameModeBase::CompleteLevel()
 		UE_LOG(LogTemp, Warning, TEXT("NO game instance found"));
 	}
 
-	UGameplayStatics::GetPlayerController(GetWorld(), 0)->InputComponent->BindAction("Enter", IE_Pressed, this, &AVileGameGameModeBase::EnterPressed);
+	inputComponent->RemoveActionBinding(pauseKey);
+	inputComponent->BindAction("Enter", IE_Pressed, this, &AVileGameGameModeBase::EnterPressed);
 
+}
+
+void AVileGameGameModeBase::PauseGame()
+{
+
+	if (bIsPaused)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Game unpaused"));
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+		bIsPaused = false;
+		pauseWidget->RemoveFromParent();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Game paused"));
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+		bIsPaused = true;
+
+		pauseWidget = CreateWidget<UUserWidget>(GetWorld(), pauseScreen);
+		pauseWidget->AddToViewport();
+	}
 }
 
 void AVileGameGameModeBase::EnterPressed()

@@ -29,14 +29,26 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UVResultsWidget> resultsScreen;
 
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UUserWidget> pauseScreen;
+
+	UUserWidget* pauseWidget;
 	
 
 private:
+	void PauseGame();
+
 	void EnterPressed();
+
+	UInputComponent* inputComponent;
 
 	int32 currentLevel;
 
 	int32 lastLevel = 2;
 
+	int32 pauseKey;
+
 	bool bIsGameOver = false;
+
+	bool bIsPaused = false;
 };

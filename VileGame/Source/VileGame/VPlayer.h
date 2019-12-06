@@ -37,18 +37,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	//Move to game mode?
-	bool bIsPaused = false;
-
-
 private:
 
 	void MoveX(float value);
 
 	void MoveY(float value);
-
-	//Will hopefully have 2 functions for the enter button...
-	void EnterPressed();
 
 	FVector2D movementDirection;
 
