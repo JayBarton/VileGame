@@ -34,6 +34,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Time")
 	float lifeTime = 5.0f;
+	//move back to private
+	UPROPERTY(EditAnywhere, Category = "test")
+	int type;
+
 
 public:	
 	// Called every frame
@@ -50,7 +54,6 @@ public:
 
 private:
 	int points;
-	int type;
 
 
 };

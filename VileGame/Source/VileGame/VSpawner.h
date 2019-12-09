@@ -33,7 +33,7 @@ public:
 	//TODO maybe include some sort of function to stop the timer if the game has ended, we'll see what that looks like
 
 
-	UPROPERTY(VisibleAnywhere, Category = "test")
+	UPROPERTY(EditAnywhere, Category = "test")
 	bool bIsFree;
 
 	bool isFreeing;

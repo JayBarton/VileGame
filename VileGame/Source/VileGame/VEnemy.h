@@ -40,6 +40,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Test")
 	float wanderAngle;
 
+	UPROPERTY(EditAnywhere, Category = "Test")
+	float ahead = 128.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Test")
+	float avoidForce = 440.0f;
+
 private:
 
 	FVector2D Seek(FVector2D toFollow);

@@ -101,15 +101,15 @@ void AVEnemy::Tick(float DeltaTime)
 
 				FVector2D steer2 = Seek(position2D);
 
-				UE_LOG(LogTemp, Warning, TEXT("Seek: %s"), *steer2.ToString());
+				//UE_LOG(LogTemp, Warning, TEXT("Seek: %s"), *steer2.ToString());
 
 				FVector2D avoidance = Avoid();
 
 				if (avoidance.Size() > 0)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("avoid: %s"), *avoidance.ToString());
+				//	UE_LOG(LogTemp, Warning, TEXT("avoid: %s"), *avoidance.ToString());
 					steer2 += avoidance * 1.5f;
-					UE_LOG(LogTemp, Warning, TEXT("Seek + Avoid: %s"), *steer2.ToString());
+				//	UE_LOG(LogTemp, Warning, TEXT("Seek + Avoid: %s"), *steer2.ToString());
 
 				}
 
@@ -117,7 +117,7 @@ void AVEnemy::Tick(float DeltaTime)
 
 				velocity = Limit(velocity + steer2, maxVelocity);
 
-				UE_LOG(LogTemp, Warning, TEXT("velocity: %s"), *velocity.ToString());
+				//UE_LOG(LogTemp, Warning, TEXT("velocity: %s"), *velocity.ToString());
 
 
 				FVector position2 = GetActorLocation();
@@ -191,8 +191,8 @@ FVector2D AVEnemy::Avoid()
 
 	FVector2D normalizedVelocity = velocity.GetSafeNormal();
 
-	FVector2D ahead1 = position + normalizedVelocity * 128;
-	FVector2D ahead2 = position + normalizedVelocity * 64;
+	FVector2D ahead1 = position + normalizedVelocity * ahead;
+	FVector2D ahead2 = position + normalizedVelocity * ahead * 0.5f;
 
 	AActor* closest = nullptr;
 
@@ -206,7 +206,8 @@ FVector2D AVEnemy::Avoid()
 		if (child.Num() > 0 && Cast<AVPickup>(child[0])->GetType() != spawnManager->currentType)
 		{
 			FVector2D currentPosition(current->GetActorLocation().X, current->GetActorLocation().Y);
-			if (Intersect(ahead1, ahead2, currentPosition, 64) && 
+			UE_LOG(LogTemp, Warning, TEXT("currentPosition: %s"), *currentPosition.ToString());
+			if (Intersect(ahead1, ahead2, currentPosition, 64) &&
 				(!closest || (position - currentPosition).Size() < 
 				(GetActorLocation() - closest->GetActorLocation()).Size()))
 			{
@@ -217,10 +218,12 @@ FVector2D AVEnemy::Avoid()
 	if (closest)
 	{
 		FVector2D closestPosition(closest->GetActorLocation().X, closest->GetActorLocation().Y);
-		
+		UE_LOG(LogTemp, Warning, TEXT("closestPosition: %s"), *closestPosition.ToString());
+
 		//avoidance = (ahead1 - closestPosition).GetSafeNormal() * 25.0f;
+		avoidance = ahead1 - closestPosition;
 		avoidance.Normalize();
-		avoidance *= 25.0f;
+		avoidance *= avoidForce;
 
 	}
 

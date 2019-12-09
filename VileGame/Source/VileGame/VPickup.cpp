@@ -28,7 +28,7 @@ void AVPickup::BeginPlay()
 	Super::BeginPlay();
 	SetLifeSpan(lifeTime);
 
-	type = FMath::RandRange(0, 1);
+	//type = FMath::RandRange(0, 1);
 	meshComp->SetMaterial(0, materials[type]);
 
 
