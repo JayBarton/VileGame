@@ -93,7 +93,7 @@ void AVSpawnManager::CheckSpawn()
 
 		//Replace this with a socket
 		FVector location = freeSpawners[randomSpawner]->GetActorLocation();
-		location.Z += 60.0f;
+		location.Z += 30.0f;
 
 		AVPickup* newPickup = GetWorld()->SpawnActor<AVPickup>(pickup, location, FRotator::ZeroRotator, SpawnParams);
 
@@ -128,7 +128,7 @@ void AVSpawnManager::CheckLevelTime()
 	GetWorldTimerManager().ClearTimer(TimerHandle_SpawnTimer);
 	GetWorldTimerManager().ClearTimer(TimerHandle_TypeTimer);
 
-	//Clear all spawners
+	GameOver.Broadcast();
 
 	Cast<AVileGameGameModeBase> (UGameplayStatics::GetGameMode(GetWorld()))->CompleteLevel();
 }

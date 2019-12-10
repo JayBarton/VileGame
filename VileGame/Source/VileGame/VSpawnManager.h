@@ -13,6 +13,8 @@ class AVPickup;
 class UMaterial;
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameOverDelegate);
+
 UCLASS()
 class VILEGAME_API AVSpawnManager : public AActor
 {
@@ -42,6 +44,9 @@ public:
 
 	UFUNCTION()
 	void CheckLevelTime();
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FGameOverDelegate GameOver;
 
 	FTimerHandle TimerHandle_SpawnTimer;
 

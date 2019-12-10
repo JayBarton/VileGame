@@ -28,8 +28,10 @@ void AVPickup::BeginPlay()
 	Super::BeginPlay();
 	SetLifeSpan(lifeTime);
 
-	//type = FMath::RandRange(0, 1);
+	type = FMath::RandRange(0, 1);
 	meshComp->SetMaterial(0, materials[type]);
+
+	Cast<AVSpawnManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AVSpawnManager::StaticClass()))->GameOver.AddDynamic(this, &AVPickup::EndIt);
 
 
 }
@@ -44,6 +46,12 @@ void AVPickup::Tick(float DeltaTime)
 void AVPickup::Kill()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("GONE!"));
+}
+
+void AVPickup::EndIt()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Destroying pickups!"));
+	Destroy();
 }
 
 int AVPickup::GetPoints()

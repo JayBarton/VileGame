@@ -48,6 +48,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Pickup")
 	void Kill();
 
+	UFUNCTION(BlueprintCallable, Category = "Pickup")
+	void EndIt();
+
 	int GetPoints();
 
 	int GetType();
