@@ -10,6 +10,7 @@ Much of the enemy's behavior is based off of the steering behaviors of Craig W. 
 #include "VSpawner.h"
 #include "VPickup.h"
 
+#include "DrawDebugHelpers.h"
 
 AVEnemy::AVEnemy()
 {
@@ -194,6 +195,13 @@ FVector2D AVEnemy::Avoid()
 	FVector2D ahead1 = position + normalizedVelocity * ahead;
 	FVector2D ahead2 = position + normalizedVelocity * ahead * 0.5f;
 
+	//DrawDebugLine(GetWorld(), FVector(ahead2, GetActorLocation().Z), FVector(ahead1, GetActorLocation().Z), FColor::Yellow, false, 0.0f, (uint8)'\000', 4.0f);
+
+	UE_LOG(LogTemp, Warning, TEXT("position: %s"), *position.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("ahead1: %s"), *ahead1.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("normalizedVelocity: %s"), *normalizedVelocity.ToString());
+
+
 	AActor* closest = nullptr;
 
 	for (int i = 0; i < spawnManager->spawners.Num(); i++)
@@ -206,8 +214,7 @@ FVector2D AVEnemy::Avoid()
 		if (child.Num() > 0 && Cast<AVPickup>(child[0])->GetType() != spawnManager->currentType)
 		{
 			FVector2D currentPosition(current->GetActorLocation().X, current->GetActorLocation().Y);
-			UE_LOG(LogTemp, Warning, TEXT("currentPosition: %s"), *currentPosition.ToString());
-			if (Intersect(ahead1, ahead2, currentPosition, 64) &&
+			if (Intersect(ahead1, ahead2, currentPosition, 128) &&
 				(!closest || (position - currentPosition).Size() < 
 				(GetActorLocation() - closest->GetActorLocation()).Size()))
 			{
@@ -219,9 +226,17 @@ FVector2D AVEnemy::Avoid()
 	{
 		FVector2D closestPosition(closest->GetActorLocation().X, closest->GetActorLocation().Y);
 		UE_LOG(LogTemp, Warning, TEXT("closestPosition: %s"), *closestPosition.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("position: %s"), *position.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("ahead1: %s"), *ahead1.ToString());
+
+		//DrawDebugLine(GetWorld(), FVector(ahead2, GetActorLocation().Z), FVector(ahead1, GetActorLocation().Z), FColor::Blue, false, 10.0f, (uint8)'\000', 4.0f);
+
+		//DrawDebugLine(GetWorld(), FVector(ahead1, GetActorLocation().Z), FVector(closestPosition, GetActorLocation().Z), FColor::Red, false, 10.0f, (uint8)'\000', 4.0f);
+
 
 		//avoidance = (ahead1 - closestPosition).GetSafeNormal() * 25.0f;
 		avoidance = ahead1 - closestPosition;
+		UE_LOG(LogTemp, Warning, TEXT("avoidance: %s"), *avoidance.ToString());
 		avoidance.Normalize();
 		avoidance *= avoidForce;
 
