@@ -5,6 +5,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "VPickup.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AVPawn::AVPawn()
@@ -39,6 +41,8 @@ void AVPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 		}
 
 		UE_LOG(LogTemp, Warning, TEXT("SCORE: %i"), score);
+
+		UGameplayStatics::PlaySound2D(GetWorld(), PickupSound);
 
 		OtherActor->Destroy();
 	}

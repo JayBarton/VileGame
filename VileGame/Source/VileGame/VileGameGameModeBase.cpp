@@ -11,9 +11,7 @@
 #include "VResultsWidget.h" 
 #include "Components/TextBlock.h" 
 
-
-
-#include "GameFramework/InputSettings.h" 
+#include "Sound/SoundCue.h"
 
 void AVileGameGameModeBase::BeginPlay()
 {
@@ -61,6 +59,7 @@ void AVileGameGameModeBase::CompleteLevel()
 		if (playerScore > enemyScore)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("PLAYER WINS"));
+			UGameplayStatics::PlaySound2D(GetWorld(), WinSound);
 
 			GI->currentLevel++;
 
@@ -82,6 +81,8 @@ void AVileGameGameModeBase::CompleteLevel()
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("PLAYER LOSES"));
+			UGameplayStatics::PlaySound2D(GetWorld(), LoseSound);
+
 			resultsWidget->results->SetText(FText::FromString("PLAYER LOSES"));
 
 		}

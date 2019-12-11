@@ -7,6 +7,8 @@
 #include "VPawn.generated.h"
 
 class UBoxComponent;
+class USoundCue;
+
 UCLASS()
 class VILEGAME_API AVPawn : public APawn
 {
@@ -21,10 +23,13 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
-		UStaticMeshComponent* meshComp;
+	UStaticMeshComponent* meshComp;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
-		UBoxComponent* boxComp;
+	UBoxComponent* boxComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundCue* PickupSound = nullptr;
 
 public:	
 

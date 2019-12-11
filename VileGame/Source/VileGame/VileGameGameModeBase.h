@@ -11,6 +11,7 @@
  */
 
 class UVResultsWidget;
+class USoundCue;
 UCLASS()
 class VILEGAME_API AVileGameGameModeBase : public AGameModeBase
 {
@@ -33,6 +34,12 @@ protected:
 	TSubclassOf<UUserWidget> pauseScreen;
 
 	UUserWidget* pauseWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundCue* WinSound = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundCue* LoseSound = nullptr;
 	
 
 private:
