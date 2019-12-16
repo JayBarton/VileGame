@@ -197,9 +197,9 @@ FVector2D AVEnemy::Avoid()
 
 	//DrawDebugLine(GetWorld(), FVector(ahead2, GetActorLocation().Z), FVector(ahead1, GetActorLocation().Z), FColor::Yellow, false, 0.0f, (uint8)'\000', 4.0f);
 
-	UE_LOG(LogTemp, Warning, TEXT("position: %s"), *position.ToString());
+	/*UE_LOG(LogTemp, Warning, TEXT("position: %s"), *position.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("ahead1: %s"), *ahead1.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("normalizedVelocity: %s"), *normalizedVelocity.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("normalizedVelocity: %s"), *normalizedVelocity.ToString());*/
 
 
 	AActor* closest = nullptr;
@@ -225,9 +225,9 @@ FVector2D AVEnemy::Avoid()
 	if (closest)
 	{
 		FVector2D closestPosition(closest->GetActorLocation().X, closest->GetActorLocation().Y);
-		UE_LOG(LogTemp, Warning, TEXT("closestPosition: %s"), *closestPosition.ToString());
+	/*	UE_LOG(LogTemp, Warning, TEXT("closestPosition: %s"), *closestPosition.ToString());
 		UE_LOG(LogTemp, Warning, TEXT("position: %s"), *position.ToString());
-		UE_LOG(LogTemp, Warning, TEXT("ahead1: %s"), *ahead1.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("ahead1: %s"), *ahead1.ToString());*/
 
 		//DrawDebugLine(GetWorld(), FVector(ahead2, GetActorLocation().Z), FVector(ahead1, GetActorLocation().Z), FColor::Blue, false, 10.0f, (uint8)'\000', 4.0f);
 

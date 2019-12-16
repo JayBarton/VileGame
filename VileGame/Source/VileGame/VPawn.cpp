@@ -63,14 +63,15 @@ void AVPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 			pointString += "-";
 		}
 		pointString += "5";
-		/*if (auto tester = Cast<UVResultsWidget>(pointDisplay))
+		
+		if (auto tester = Cast<UVResultsWidget>(pointDisplay->GetUserWidgetObject()))
 		{
 			tester->results->SetText(FText::FromString(pointString));
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("How you gonna play me like this"));
-		}*/
+		}
 
 		UE_LOG(LogTemp, Warning, TEXT("SCORE: %i"), score);
 
