@@ -8,6 +8,7 @@
 
 class UBoxComponent;
 class USoundCue;
+class UWidgetComponent;
 
 UCLASS()
 class VILEGAME_API AVPawn : public APawn
@@ -30,6 +31,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	USoundCue* PickupSound = nullptr;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "UI")
+		UWidgetComponent* pointDisplay;
 
 public:	
 

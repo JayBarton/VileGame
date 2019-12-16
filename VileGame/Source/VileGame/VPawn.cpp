@@ -8,6 +8,13 @@
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "VResultsWidget.h" 
+#include "Components/TextBlock.h" 
+
+
+
+#include "Components/WidgetComponent.h" 
+
 // Sets default values
 AVPawn::AVPawn()
 {
@@ -19,6 +26,11 @@ AVPawn::AVPawn()
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("meshComp"));
 	meshComp->SetupAttachment(RootComponent);
+
+	pointDisplay = CreateDefaultSubobject<UWidgetComponent>(TEXT("pointDisplay"));
+	pointDisplay->SetupAttachment(RootComponent);
+	pointDisplay->SetWidgetClass(UVResultsWidget::StaticClass());
+	pointDisplay->SetWidgetSpace(EWidgetSpace::Screen);
 }
 
 // Called when the game starts or when spawned
@@ -34,11 +46,31 @@ void AVPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 {
 	if (AVPickup * pickup = Cast<AVPickup>(OtherActor))
 	{
-		score += pickup->GetPoints();
+		int32 points = pickup->GetPoints();
+		score += points;
 		if (score < 0)
 		{
 			score = 0;
 		}
+
+		FString pointString = "";
+		if (points > 0)
+		{
+			pointString += "+";
+		}
+		else
+		{
+			pointString += "-";
+		}
+		pointString += "5";
+		/*if (auto tester = Cast<UVResultsWidget>(pointDisplay))
+		{
+			tester->results->SetText(FText::FromString(pointString));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("How you gonna play me like this"));
+		}*/
 
 		UE_LOG(LogTemp, Warning, TEXT("SCORE: %i"), score);
 
