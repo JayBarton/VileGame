@@ -8,9 +8,8 @@
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
 
-#include "VResultsWidget.h" 
+#include "VPointWidget.h"
 #include "Components/TextBlock.h" 
-
 
 
 #include "Components/WidgetComponent.h" 
@@ -29,7 +28,7 @@ AVPawn::AVPawn()
 
 	pointDisplay = CreateDefaultSubobject<UWidgetComponent>(TEXT("pointDisplay"));
 	pointDisplay->SetupAttachment(RootComponent);
-	pointDisplay->SetWidgetClass(UVResultsWidget::StaticClass());
+	pointDisplay->SetWidgetClass(UVPointWidget::StaticClass());
 	pointDisplay->SetWidgetSpace(EWidgetSpace::Screen);
 }
 
@@ -64,16 +63,14 @@ void AVPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 		}
 		pointString += "5";
 		
-		if (auto tester = Cast<UVResultsWidget>(pointDisplay->GetUserWidgetObject()))
+		if (auto pointWidget = Cast<UVPointWidget>(pointDisplay->GetUserWidgetObject()))
 		{
-			tester->results->SetText(FText::FromString(pointString));
+			pointWidget->DisplayPoints(pointString);
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("How you gonna play me like this"));
 		}
-
-		UE_LOG(LogTemp, Warning, TEXT("SCORE: %i"), score);
 
 		UGameplayStatics::PlaySound2D(GetWorld(), PickupSound);
 
