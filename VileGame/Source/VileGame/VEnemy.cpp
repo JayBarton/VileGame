@@ -122,9 +122,18 @@ void AVEnemy::Tick(float DeltaTime)
 
 
 				FVector position2 = GetActorLocation();
+				FVector p2 = position2;
 				position2.X += velocity.X * DeltaTime;
+				if (!SetActorLocation(position2, true))
+				{
+					position2.X = p2.X;
+				}
 				position2.Y += velocity.Y * DeltaTime;
-				SetActorLocation(position2, true);
+				if (!SetActorLocation(position2, true))
+				{
+					position2.Y = p2.Y;
+				}
+
 			}
 			else
 			{
@@ -222,6 +231,15 @@ FVector2D AVEnemy::Avoid()
 			}
 		}
 	}
+	auto player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	FVector2D currentPosition(player->GetActorLocation().X, player->GetActorLocation().Y);
+	if (Intersect(ahead1, ahead2, currentPosition, 64) &&
+		(!closest || (position - currentPosition).Size() <
+		(GetActorLocation() - closest->GetActorLocation()).Size()))
+	{
+		closest = player;
+	}
+
 	if (closest)
 	{
 		FVector2D closestPosition(closest->GetActorLocation().X, closest->GetActorLocation().Y);
@@ -231,7 +249,7 @@ FVector2D AVEnemy::Avoid()
 
 		//DrawDebugLine(GetWorld(), FVector(ahead2, GetActorLocation().Z), FVector(ahead1, GetActorLocation().Z), FColor::Blue, false, 10.0f, (uint8)'\000', 4.0f);
 
-		//DrawDebugLine(GetWorld(), FVector(ahead1, GetActorLocation().Z), FVector(closestPosition, GetActorLocation().Z), FColor::Red, false, 10.0f, (uint8)'\000', 4.0f);
+//		DrawDebugLine(GetWorld(), FVector(ahead1, GetActorLocation().Z), FVector(closestPosition, GetActorLocation().Z), FColor::Red, false, 10.0f, (uint8)'\000', 4.0f);
 
 
 		//avoidance = (ahead1 - closestPosition).GetSafeNormal() * 25.0f;

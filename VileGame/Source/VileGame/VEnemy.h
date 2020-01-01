@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Test")
 	float maxVelocity;
 	UPROPERTY(EditAnywhere, Category = "Test")
-	float maxForce = 500.0f;
+	float maxForce = 20.0f;
 	UPROPERTY(EditAnywhere, Category = "Test")
 	float wanderAngle;
 
