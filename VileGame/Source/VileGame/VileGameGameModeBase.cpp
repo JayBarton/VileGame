@@ -100,22 +100,26 @@ void AVileGameGameModeBase::CompleteLevel()
 
 void AVileGameGameModeBase::PauseGame()
 {
-
+	auto controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (bIsPaused)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Game unpaused"));
 		UGameplayStatics::SetGamePaused(GetWorld(), false);
 		bIsPaused = false;
 		pauseWidget->RemoveFromParent();
+		controller->SetInputMode(FInputModeGameOnly());
+		controller->bShowMouseCursor = false;
+
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Game paused"));
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
 		bIsPaused = true;
 
 		pauseWidget = CreateWidget<UUserWidget>(GetWorld(), pauseScreen);
 		pauseWidget->AddToViewport();
+		controller->SetInputMode(FInputModeGameAndUI());
+		controller->bShowMouseCursor = true;
+
 	}
 }
 

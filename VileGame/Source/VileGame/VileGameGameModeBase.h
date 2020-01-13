@@ -22,6 +22,10 @@ public:
 
 	void CompleteLevel();
 
+	UFUNCTION(BlueprintCallable)
+	void PauseGame();
+
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
@@ -43,7 +47,6 @@ protected:
 	
 
 private:
-	void PauseGame();
 
 	void EnterPressed();
 
