@@ -12,6 +12,9 @@
 
 class UVResultsWidget;
 class USoundCue;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPauseDelegate);
+
 UCLASS()
 class VILEGAME_API AVileGameGameModeBase : public AGameModeBase
 {
@@ -24,6 +27,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void PauseGame();
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FPauseDelegate GamePaused;
 
 
 protected:

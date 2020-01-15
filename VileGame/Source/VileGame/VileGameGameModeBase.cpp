@@ -121,6 +121,7 @@ void AVileGameGameModeBase::PauseGame()
 		controller->bShowMouseCursor = true;
 
 	}
+	GamePaused.Broadcast();
 }
 
 void AVileGameGameModeBase::EnterPressed()
