@@ -67,7 +67,7 @@ void AVileGameGameModeBase::CompleteLevel()
 			{
 				//return to title
 				UE_LOG(LogTemp, Warning, TEXT("GAME OVER"));
-				resultsWidget->results->SetText(FText::FromString("GAME OVER"));
+				resultsWidget->results->SetText(FText::FromString("GAME OVER\nPress enter to return to title"));
 
 				GI->currentLevel = 1;
 				bIsGameOver = true;
