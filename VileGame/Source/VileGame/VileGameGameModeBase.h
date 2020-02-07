@@ -60,7 +60,7 @@ private:
 
 	int32 currentLevel;
 
-	int32 lastLevel = 1;
+	int32 lastLevel = 3;
 
 	int32 pauseKey;
 
